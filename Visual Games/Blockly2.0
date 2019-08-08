@@ -8,14 +8,13 @@ BLUE = (50, 50, 255)
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 1000
 
-#knockout = input("Would you like to play knockout?")
-#knockout_2 = int(knockout)
-#knockout_2 = True
+move= input("Enter movement number (F, B, L, R):")
+a = int(move[:-1])
+direction = move[-1]
 
-speed = input("How fast should your character go?(25+ causes glitch, 100+ causes lag)")
-a = int(speed) 
- 
- 
+#speed = input("How fast should your character go?(25+ causes glitch, 100+ causes lag)")
+#a = int(speed)
+
 class Player(pygame.sprite.Sprite):
     change_x = 0
     change_y = 0
@@ -55,8 +54,8 @@ class Player(pygame.sprite.Sprite):
                 self.rect.bottom = block.rect.top
             else:
                 self.rect.top = block.rect.bottom
- 
- 
+
+
 class Wall(pygame.sprite.Sprite):
     """ Wall the player can run into. """
     def __init__(self, x, y, width, height):
@@ -82,51 +81,36 @@ wall_list = pygame.sprite.Group()
 wall = Wall(0, 0, 10, 1000)
 wall_list.add(wall)
 all_sprite_list.add(wall)
- 
+
 wall = Wall(10, 0, 990, 10)
 wall_list.add(wall)
 all_sprite_list.add(wall)
 
- 
+wall = Wall(990, 0, 10, 1000)
+wall_list.add(wall)
+all_sprite_list.add(wall)
+
+wall = Wall(10, 990, 990, 10)
+wall_list.add(wall)
+all_sprite_list.add(wall)
+
+wall = Wall(10, 200, 400, 10)
+wall_list.add(wall)
+all_sprite_list.add(wall)
+player = Player(50, 50)
+player.walls = wall_list
+
+all_sprite_list.add(player) 
 clock = pygame.time.Clock()
- 
 done = False
- 
-while not done:
- 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            done = True
- 
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                player.changespeed(-a, 0)
-            elif event.key == pygame.K_RIGHT:
-                player.changespeed(a, 0)
-            elif event.key == pygame.K_UP:
-                player.changespeed(0, -a)
-            elif event.key == pygame.K_DOWN:
-                player.changespeed(0, a)
- 
-        elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT:
-                player.changespeed(a, 0)
-            elif event.key == pygame.K_RIGHT:
-                player.changespeed(-a, 0)
-            elif event.key == pygame.K_UP:
-                player.changespeed(0, a)
-            elif event.key == pygame.K_DOWN:
-                player.changespeed(0, -a)
- 
-            
-    all_sprite_list.update()
- 
-    screen.fill(BLACK)
- 
-    all_sprite_list.draw(screen)
- 
-    pygame.display.flip()
- 
-    clock.tick(60)
- 
-pygame.quit()
+
+
+
+if direction == "L":
+    player.changespeed(-a, 0)
+if direction == "R":
+    player.changespeed(a, 0)
+if direction  == "F":
+    player.changespeed(0, -a)
+if direction == "B":
+    player.changespeed(0, a)
